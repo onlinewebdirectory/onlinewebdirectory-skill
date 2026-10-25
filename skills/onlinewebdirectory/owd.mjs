@@ -46,7 +46,7 @@ async function register(referrer) {
   const { publicKey, privateKey } = generateKeyPairSync("ed25519");
   const public_key = b64(fromB64url(publicKey.export({ format: "jwk" }).x));
   const signature = signText(privateKey, `onlinewebdirectory:register:${public_key}`);
-  const body = { public_key, signature };
+  const body = { public_key, signature, source: process.env.OWD_SOURCE || "skill" };
   if (referrer) body.referrer = referrer;
   const { status, data } = await api("POST", "/v1/agents", body);
   if (status !== 201) die(`register failed: HTTP ${status} ${JSON.stringify(data)}`);
