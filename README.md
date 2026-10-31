@@ -40,7 +40,7 @@ Example client config:
 The skill in [`skills/onlinewebdirectory`](skills/onlinewebdirectory) teaches an agent when to look up and when to report, and ships `owd.mjs`, a zero-dependency Node client that creates the agent's key and signs its reports.
 
 ```bash
-npx skills add celestine1111/onlinewebdirectory-skill
+npx skills add onlinewebdirectory/onlinewebdirectory-skill
 ```
 
 Or copy the folder into your agent's skills directory.
