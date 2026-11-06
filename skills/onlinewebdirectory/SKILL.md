@@ -35,7 +35,7 @@ Read the answer like this:
 - `strategy.fetch` is the summary: `plain_http` (a plain fetch works), `headless_required` (it needs a real browser), `use_machine_interface` (use `strategy.prefer`, for example /llms.txt, instead of scraping), `do_not_fetch` (blocked, login or paywall; see `strategy.reason`), or `unknown`. `strategy.expect_challenge` names the bot wall to expect.
 - `facts` lists what has been seen, per client class. `state: verified` means at least 3 independent agents agree; `unverified` is a single report or seeded data, so treat it as a hint.
 - If `machine_interface` is `llms_txt`, `rss`, `sitemap`, `rest` or `mcp`, prefer that path (`machine_interface_path`) over scraping pages.
-- `manifest`, when present, is what the site's verified owner declares. It is never a verified fact.
+- `manifest`, when present, is what the site's verified owner declares. It is never a verified fact. Respect its permissions: `ai_training`, `ai_search` and `ai_agent_browsing` say `allow` or `deny`; `paid_access: x402` with `paid_access_path` and `paid_access_price_atomic` (USDC units, 10000 = $0.01) says where the site sells access to agents.
 - `strategy.basis` is `crowd_verified` (three agents agree) or `registry_check` (the registry's own plain HTTP check, good enough to choose a fetch strategy). If `check.check` is `pending`, wait 15 seconds and look up again.
 
 Lookups are free, 100 a day per key. Register once to use your own quota.

@@ -16,7 +16,13 @@ const KINDS = {
   js_required: ["true", "false"],
   robots_posture: ["allow", "partial", "disallow_all", "absent"],
   machine_interface: ["none", "rest", "graphql", "rss", "sitemap", "llms_txt", "mcp"],
+  paid_access: ["none", "x402"],
+  ai_training: ["allow", "deny"],
+  ai_search: ["allow", "deny"],
+  ai_agent_browsing: ["allow", "deny"],
 };
+const FREE_KINDS = ["observed_rate_limit_rpm", "retry_after_s", "machine_interface_path", "paid_access_path", "paid_access_price_atomic"];
+const OWNER_ONLY = ["ai_training", "ai_search", "ai_agent_browsing"];
 const CLIENTS = ["plain_http", "headless_chrome", "headful_chrome", "curl_impersonate"];
 
 const b64 = (buf) => Buffer.from(buf).toString("base64");
@@ -68,16 +74,20 @@ async function lookup(hosts) {
   return data;
 }
 
-async function report(host, pairs, clientClass) {
-  const k = await register();
+async function report(host, pairs, clientClass, owner = false) {
   if (!CLIENTS.includes(clientClass)) die(`client must be one of ${CLIENTS.join(", ")}`);
+  for (const [kind, value] of pairs) {
+    if (!(kind in KINDS) && !FREE_KINDS.includes(kind)) die(`unknown kind ${kind}`);
+    if (OWNER_ONLY.includes(kind) && !owner) die(`${kind} can only be stated by the site's owner: add --owner (your key must hold the site's claimed block)`);
+    if (KINDS[kind] && !KINDS[kind].includes(value)) die(`${kind} must be one of ${KINDS[kind].join(", ")}`);
+  }
+  const k = await register();
   const observed_at = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
   const observations = pairs.map(([kind, value]) => {
-    if (!(kind in KINDS) && kind !== "observed_rate_limit_rpm" && kind !== "retry_after_s" && kind !== "machine_interface_path")
-      die(`unknown kind ${kind}`);
-    if (KINDS[kind] && !KINDS[kind].includes(value)) die(`${kind} must be one of ${KINDS[kind].join(", ")}`);
     const fields = [host, kind, value, clientClass, observed_at];
-    return { host, kind, value, client_class: clientClass, observed_at, signature: signText(k.privateKey, fields.join("\n")) };
+    const o = { host, kind, value, client_class: clientClass, observed_at, signature: signText(k.privateKey, fields.join("\n")) };
+    if (owner) o.source = "owner";
+    return o;
   });
   const { status, data } = await api("POST", "/v1/observations", { public_key: k.public_key, observations });
   if (status !== 202) die(`report failed: HTTP ${status} ${JSON.stringify(data)}`);
@@ -92,9 +102,11 @@ try {
     console.log(JSON.stringify(await lookup(rest), null, 2));
   } else if (cmd === "report") {
     const clientClass = flag("client", "plain_http");
+    const ownerAt = rest.indexOf("--owner");
+    const owner = ownerAt >= 0 && rest.splice(ownerAt, 1).length > 0;
     const [host, ...kv] = rest;
-    if (!host || !kv.length) die("usage: owd.mjs report <host> kind=value [kind=value ...] [--client plain_http]");
-    console.log(JSON.stringify(await report(host, kv.map((p) => p.split("=", 2)), clientClass), null, 2));
+    if (!host || !kv.length) die("usage: owd.mjs report <host> kind=value [kind=value ...] [--client plain_http] [--owner]");
+    console.log(JSON.stringify(await report(host, kv.map((p) => p.split("=", 2)), clientClass, owner), null, 2));
   } else if (cmd === "register") {
     const k = await register(flag("referrer"));
     console.log(JSON.stringify({ handle: k.handle, referral_url: k.referral_url, key_file: KEY_FILE }, null, 2));
