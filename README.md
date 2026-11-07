@@ -25,6 +25,18 @@ In Claude Code:
 
 Works with: Claude Code (plugin, skill and MCP), and any client that can add a remote MCP server or a SKILL.md skill.
 
+## Data and network
+
+Everything the plugin sends, reads and writes:
+
+- **Before a web fetch** (the hook): sends the hostname of the URL, and nothing else from it (no path, query, page content or prompt), to `https://onlinewebdirectory.net/v1/origins/{host}`. Local and private addresses (localhost, IP addresses, `.local`, `.internal` and similar) are never sent. If a key file exists, its `read_token` is sent as the `X-Agent-Token` header so the lookup counts against that key's free quota.
+- **Files on your machine:** the hook reads `~/.config/onlinewebdirectory/key.json` (created only if you run the skill's `register` or `report` commands) and reads and writes `~/.config/onlinewebdirectory/plugin-cache.json` (one cached answer per host for an hour, mode 600). `OWD_HOME` moves this folder.
+- **The skill** (`skills/onlinewebdirectory/owd.mjs`) calls the same API when you or your agent run it: lookups send hostnames; reports send the hostname and the observed facts, signed with your key. It never sends page content.
+- **The MCP server** is the same service at `https://onlinewebdirectory.net/mcp`.
+- No other destinations, no analytics, no telemetry. The hook never blocks or changes a fetch; it only adds one line of context. Turn it off with `OWD_PLUGIN=off`.
+
+Privacy policy: https://onlinewebdirectory.net/privacy
+
 ## Use it as an MCP server
 
 Remote, streamable HTTP, no install:
