@@ -20,6 +20,7 @@ const KINDS = {
   ai_training: ["allow", "deny"],
   ai_search: ["allow", "deny"],
   ai_agent_browsing: ["allow", "deny"],
+  robots_ai_training: ["deny", "partial", "allow", "absent"],
 };
 const FREE_KINDS = ["observed_rate_limit_rpm", "retry_after_s", "machine_interface_path", "paid_access_path", "paid_access_price_atomic"];
 const OWNER_ONLY = ["ai_training", "ai_search", "ai_agent_browsing"];
