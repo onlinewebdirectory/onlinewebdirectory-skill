@@ -1,7 +1,7 @@
 {
   "name": "onlinewebdirectory",
   "displayName": "Online Web Directory",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Know how a website treats agents before you fetch it: bot walls, JavaScript, robots rules, llms.txt and APIs to use instead, x402 paid access, and the owner's AI permissions, for 57,000+ sites. Adds a pre-fetch check, a lookup skill and the MCP server.",
   "author": { "name": "Online Web Directory", "url": "https://onlinewebdirectory.net" },
   "homepage": "https://onlinewebdirectory.net",

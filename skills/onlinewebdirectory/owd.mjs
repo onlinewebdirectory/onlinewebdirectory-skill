@@ -22,7 +22,7 @@ const KINDS = {
   ai_agent_browsing: ["allow", "deny"],
   robots_ai_training: ["deny", "partial", "allow", "absent"],
 };
-const FREE_KINDS = ["observed_rate_limit_rpm", "retry_after_s", "machine_interface_path", "paid_access_path", "paid_access_price_atomic"];
+const FREE_KINDS = ["observed_rate_limit_rpm", "retry_after_s", "machine_interface_path", "paid_access_path", "paid_access_price_atomic", "mcp_card_path", "api_catalog_path", "api_host"];
 const OWNER_ONLY = ["ai_training", "ai_search", "ai_agent_browsing"];
 const CLIENTS = ["plain_http", "headless_chrome", "headful_chrome", "curl_impersonate"];
 

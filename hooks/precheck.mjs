@@ -63,8 +63,21 @@ export function advise(host, url, data) {
     }
   }
 
-  const robots = data && data.registry_check && data.registry_check.values && data.registry_check.values.robots_posture;
-  if (robots === "disallow_all") parts.push(`${host}'s robots.txt disallows all agents.`);
+  const rc = (data && data.registry_check && data.registry_check.values) || {};
+  if (rc.robots_posture === "disallow_all") parts.push(`${host}'s robots.txt disallows all agents.`);
+
+  // Machine interfaces the site publishes. A path must be same-site and an API
+  // host must be the site itself or one of its subdomains.
+  const site = host.replace(/^www\./, "");
+  const onSite = (h) => typeof h === "string" && /^[a-z0-9.-]{1,253}$/.test(h) && (h === site || h.endsWith(`.${site}`));
+  const found = [];
+  if (typeof rc.mcp_card_path === "string" && PATH.test(rc.mcp_card_path)) found.push(`an MCP server card at https://${host}${rc.mcp_card_path}`);
+  if (onSite(rc.api_host)) found.push(`an API at https://${rc.api_host}`);
+  if (rc.paid_access === "x402" && !(data.manifest && data.manifest.paid_access)) {
+    const p = typeof rc.paid_access_path === "string" && PATH.test(rc.paid_access_path) ? ` at https://${host}${rc.paid_access_path}` : "";
+    found.push(`paid access by x402${p}`);
+  }
+  if (found.length) parts.push(`${host} publishes ${found.join(", ")}; prefer it to scraping pages.`);
 
   const m = (data && data.manifest) || {};
   const perms = [];
