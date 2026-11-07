@@ -25,6 +25,14 @@ In Claude Code:
 
 Works with: Claude Code (plugin, skill and MCP), and any client that can add a remote MCP server or a SKILL.md skill.
 
+## Add the MCP server in one click
+
+- **VS Code:** [Install in VS Code](https://insiders.vscode.dev/redirect/mcp/install?name=onlinewebdirectory&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A//onlinewebdirectory.net/mcp%22%7D) (opens VS Code and adds the server)
+- **Cursor:** paste this into your browser's address bar, and Cursor asks to add the server:
+  `cursor://anysphere.cursor-deeplink/mcp/install?name=onlinewebdirectory&config=eyJ1cmwiOiJodHRwczovL29ubGluZXdlYmRpcmVjdG9yeS5uZXQvbWNwIn0=`
+- **claude.ai and Claude Desktop:** Settings, then Connectors, then **Add custom connector**, and paste `https://onlinewebdirectory.net/mcp`. No sign-in needed.
+- **Any other MCP client:** add a remote (streamable HTTP) server at `https://onlinewebdirectory.net/mcp`.
+
 ## Data and network
 
 Everything the plugin sends, reads and writes:
