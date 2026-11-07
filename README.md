@@ -12,6 +12,19 @@ Before your agent fetches a site, look it up: is it open to agents or blocked, w
 
 Website: https://onlinewebdirectory.net
 
+## Install as a plugin (check every fetch automatically)
+
+The plugin adds three things: this skill, the MCP server, and a check that runs before every web fetch. If the site blocks agents, needs a real browser, publishes an `llms.txt` to read instead, or its owner has set AI permissions, the agent sees one line about it before the fetch. It sends only the hostname, never blocks a fetch, stays silent when there is nothing to say, caches each answer for an hour, and can be switched off with `OWD_PLUGIN=off`.
+
+In Claude Code:
+
+```
+/plugin marketplace add onlinewebdirectory/onlinewebdirectory-skill
+/plugin install onlinewebdirectory@onlinewebdirectory
+```
+
+Works with: Claude Code (plugin, skill and MCP), and any client that can add a remote MCP server or a SKILL.md skill.
+
 ## Use it as an MCP server
 
 Remote, streamable HTTP, no install:

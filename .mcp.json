@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "onlinewebdirectory": {
+      "type": "http",
+      "url": "https://onlinewebdirectory.net/mcp"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "onlinewebdirectory",
+  "description": "Plugins from Online Web Directory, the registry of how websites treat agents.",
+  "owner": {
+    "name": "Online Web Directory",
+    "url": "https://onlinewebdirectory.net"
+  },
+  "plugins": [
+    {
+      "name": "onlinewebdirectory",
+      "source": "./",
+      "description": "Check how a website treats agents before fetching it: bot walls, llms.txt, APIs, x402 and owner AI permissions for 57,000+ sites.",
+      "version": "0.1.0"
+    }
+  ]
+}
