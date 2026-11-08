@@ -10,7 +10,7 @@
       "name": "onlinewebdirectory",
       "source": "./",
       "description": "Check how a website treats agents before fetching it: bot walls, llms.txt, APIs, x402 and owner AI permissions for 57,000+ sites.",
-      "version": "0.2.0"
+      "version": "0.2.1"
     }
   ]
 }

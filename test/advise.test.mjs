@@ -59,3 +59,9 @@ test("discovered machine interfaces are pointed out, from validated values only"
     registry_check: { values: { api_host: "evil.test", mcp_card_path: "//evil.test/x" } } });
   assert.equal(bad, null, "a host outside the site or a non-path is never echoed");
 });
+
+test("an x402 catalog that lives on the site's API host is pointed to there", () => {
+  const m = advise("x402node.dev", "https://x402node.dev/", { strategy: { fetch: "plain_http" },
+    registry_check: { values: { paid_access: "x402", api_host: "api.x402node.dev" } } });
+  assert.match(m, /x402 at https:\/\/api\.x402node\.dev\/\.well-known\/x402/);
+});

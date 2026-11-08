@@ -74,7 +74,8 @@ export function advise(host, url, data) {
   if (typeof rc.mcp_card_path === "string" && PATH.test(rc.mcp_card_path)) found.push(`an MCP server card at https://${host}${rc.mcp_card_path}`);
   if (onSite(rc.api_host)) found.push(`an API at https://${rc.api_host}`);
   if (rc.paid_access === "x402" && !(data.manifest && data.manifest.paid_access)) {
-    const p = typeof rc.paid_access_path === "string" && PATH.test(rc.paid_access_path) ? ` at https://${host}${rc.paid_access_path}` : "";
+    const p = typeof rc.paid_access_path === "string" && PATH.test(rc.paid_access_path) ? ` at https://${host}${rc.paid_access_path}`
+      : onSite(rc.api_host) ? ` at https://${rc.api_host}/.well-known/x402` : "";
     found.push(`paid access by x402${p}`);
   }
   if (found.length) parts.push(`${host} publishes ${found.join(", ")}; prefer it to scraping pages.`);
